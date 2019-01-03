@@ -1,0 +1,107 @@
+body{
+    background: linear-gradient(white,white, #70b6e7,#70b6e7);
+  background-repeat: repeat;
+  background-size: cover;
+  background-position: absolute; 
+      }
+      head{
+        background-color: white;
+      }
+      .jumbotron{
+        opacity: 0.73;
+        color: black;
+      }
+
+div {
+  position: relative;
+  overflow: hidden;
+}
+input {
+  width: 100px;
+
+  height: 200px;
+  position: absolute;
+  font-size: 2000px;
+  opacity: 0;
+  right: 120px;
+  top: 10px;
+}
+.button{
+  width: 195px;
+  background:#00b3ed;
+  color:#fff;
+  border:none;
+  position:relative;
+  height:60px;
+  font-size:1.6em;
+  padding:0 2em;
+  cursor:pointer;
+  transition:800ms ease all;
+  outline:none;
+}
+.button:hover{
+  background:#fff;
+  color:#00b3ed;
+}
+.button:before, .button:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: #00b3ed;
+  transition:400ms ease all;
+}
+.button:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+.button:hover:before, .button:hover:after{
+  width:100%;
+  transition:800ms ease all;
+}
+button{
+  background:#00b3ed;
+  color:#fff;
+  border:none;
+  position:relative;
+  height:60px;
+  font-size:1em;
+  padding:0 2em;
+  cursor:pointer;
+  transition:800ms ease all;
+  outline:none;
+}
+button:hover{
+  background:#fff;
+  color:#00b3ed;
+}
+button:before,button:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: #00b3ed;
+  transition:400ms ease all;
+}
+button:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+button:hover:before,button:hover:after{
+  width:100%;
+  transition:800ms ease all;
+}
+span{
+  font-size: 16px;
+                  height: 50px;
+                  width: 200px;
+                  line-height: 60px;
+}

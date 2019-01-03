@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <!-- Required meta tags -->
+    {% load static %}
+        <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+        <link rel="shortcut icon" type="image/png" href="{& static 'favicon.ico' %}"/>
+        <style type="text/css">
+      body{
+    background: linear-gradient(white,white, #70b6e7,#70b6e7);
+  background-repeat: repeat;
+  background-size: cover;
+  background-position: absolute; 
+      }
+      head{
+        background-color: white;
+      }
+      .jumbotron{
+        opacity: 0.73;
+        color: black;
+      }
+      .loader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url("{% static 'gifloader.gif' %}") 50% 50% no-repeat rgb(249,249,249);
+    opacity: .8;
+}
+    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>POS!</title>
+        <img src="{% static 'headerpos.jpg' %}" class="img-fluid rounded mx-auto d-block" alt="Responsive image">
+  </head>
+  <body class="p-3 mb-2 text-blue">
+
+    <div class="jumbotron style="background-color:#00F3FF"">
+
+{% if tieneOS2_ == True %}
+
+    <p class="text-center">D.N.I Solicitado: <strong>{{documento_}} {{elNombre_}}</strong>
+
+</p>
+<div class="text-center">
+
+  <strong>DATOS PUCO</strong>
+    {% for i in listaPuco_ %}
+      <p>{{i}}</p>  
+    {% endfor %}
+  <strong>DATOS IOMA</strong>
+  <p>{{ioma_}}</p>
+  <strong>DATOS SS SALUD</strong>
+  <p>{{spin_}}</p>
+  {%if tienePAMI_ == True %}
+  <div>
+    <strong>
+      <p>
+      DATOS PAMI        
+      </p>
+</div>
+
+      {% if capitaOnoTF_ == False %}
+
+      <div class="alert alert-danger alert-dismissible">
+      	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      {% endif %}
+      {% if capitaOnoTF_ == True %}
+      <div class="alert alert-info alert-dismissible">
+      	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      {% endif %}
+
+      	<p class="text-center">
+      	{{capitaOno_}}
+      </p>
+      </div>
+      
+    </strong>
+
+{% for elemento in listaPamisNormal_ %}
+    {% if forloop.counter|divisibleby:2 %}
+       <table class="table text-center">
+        <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">D.MODULO</th>
+              <th scope="col">RED</th>
+              <th scope="col">PRESTADOR</th>
+            </tr>
+        </thead>
+      <tbody>
+        {% for a,b,c in elemento %}
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td>{{a}}</td>
+              <td>{{b}}</td>
+              <td>{{c}}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+       
+    {% else %}
+    {% for a in elemento %}
+            <div class="text-center">
+             <strong> {{a}} </strong>
+            </div>
+    {% endfor %} 
+
+
+
+
+  {% endif %}
+    {% endfor %}
+    {% endif %}
+
+{% if pamiDice_ == True %}
+ <strong>DATOS PAMI</strong>
+  <p style="color:red;">NO SE REGISTRAN DATOS SOBRE DONDE CAPITA</p>
+{% endif %}
+
+   </div>
+  {% endif %}
+  {% if tieneOS2_ == False %}
+<div class="text-center">
+
+{% if tieneSUMAR_ == True %}
+ <p class="text-center">D.N.I Solicitado: <strong>{{documento_}} - {{elNombre_}}</strong>
+</p>
+  <strong>ESTA INSCRIPTO/A EN EL PLAN SUMAR</strong>
+</div>
+{% endif %}
+{% if tieneSUMAR_ == False %}
+ <p class="text-center">D.N.I Solicitado: <strong>{{documento_}}</strong>
+</p>
+<strong>NO SE REPORTAN DATOS DE NINGUN TIPO</strong>
+</div>
+{% endif %}
+
+
+</strong>
+{% endif %}
+
+  <div  class="text-right">
+  <a href="{% url 'masInformacion' %}" onclick="showHide();">Mas informacion PAMI</a>
+</div>
+</div>
+      <div class="loader" id="hidden_div" style="display:none">
+
+        <div class="text-center">
+        </div>
+        
+      </div>
+  <div  class="text-right">
+  <a href="{% url 'consultaUnica' %}">Volver</a>
+</div>
+  <footer class="page-footer font-small blue pt-4 mt-4">
+
+  <!-- Footer Links -->
+  <div class="container-fluid text-center text-md-left">
+
+    <!-- Grid row -->
+    <div class="row">
+
+      <!-- Grid column -->
+      <div class="col-md-6 mt-md-0 mt-3">
+
+        <!-- Content --> 
+        <div class="text-center" style="color: white;">
+        <h5 class="text-uppercase">MUNICIPALIDAD DE SAN MIGUEL</h5>
+
+                  <span>PAGINAS EN LAS QUE CONSULTA ESTA APLICACION:</span>
+        <p><strong>PUCO</strong></p>
+        <p><strong>SUPERINTENDENCIA DE SALUD</strong> </p>
+        <p><strong>IOMA</strong></p>
+        <p><strong>PLAN SUMAR</strong> </p>
+        <p><strong>PAMI</strong></p>
+
+   
+
+      </div>
+           </div>
+      <!-- Grid column -->
+
+      <hr class="clearfix w-100 d-md-none pb-3">
+
+      <!-- Grid column -->
+      <div class="col-md-6 mb-md-0 mb-3">
+
+        <!-- Links -->
+        <h5 class="text-uppercase"><span style="color:white;">Contactos:</span></h5>
+
+        <ul class="list-unstyled">
+          <li>
+            <a href="http://www.msm.gov.ar/">MSM</a>
+          </li>
+          <li>
+            <a href="http://www.intranet.msm.gov.ar/">Intranet</a>
+          </li>
+          <li>
+            <a href="https://twitter.com/munisanmiguelok?lang=es">Twitter MSM</a>
+          </li>
+          <li>
+            <a href="https://twitter.com/smconectado?lang=es">SM conectado</a>
+          </li>
+        </ul>
+
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+  </div>
+  <!-- Footer Links -->
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2018 Desarrollado por la Municipalidad de San Miguel.
+    <a href="https://mdbootstrap.com/bootstrap-tutorial/"> http://www.msm.gov.ar/</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+$(window).load(function() {
+    $(".loader");
+});
+</script>
+<script type="text/javascript">
+ function showHide() {
+   var div = document.getElementById("hidden_div");
+   if (div.style.display == 'none') {
+     div.style.display = '';
+   }
+   else {
+     div.style.display = 'none';
+   }
+ }
+    </script>
+  </body>
+</html>
