@@ -15,6 +15,7 @@
     <title>POS!</title>
         <img src="{% static 'headerpos.jpg' %}" class="img-fluid rounded mx-auto d-block" alt="Responsive image">
   </head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <style type="text/css">
 #id_your_name{
   width: 500px;
@@ -40,17 +41,14 @@
 <form method="post" enctype="multipart/form-data" onsubmit="showHide();">
 <div class="row align-items-center justify-content-center">
 {% csrf_token %}
-    <div class="button">
-       <span style="font-size: 16px;
-                  height: 50px;
-                  width: 200px;
-                  line-height: 60px;
-  ">Subir archivo</span>
-        <input type="file" name="myfile" accept=".xlsx" style="height: 10px;
-        font-size: 200000px;
-        top: 0px;">
+<!--    <button type="button" class="btn btn-primary"> 
+        <input class="btn btn-primary" type="file" name="myfile" accept=".xlsx" value="subir archivo">
 
-    </div>
+    </button>-->
+   <div class="custom-file" style="width: 30%;">
+    <input type="file" name="myfile" accept=".xlsx" class="custom-file-input" id="validatedCustomFile" required>
+    <label class="custom-file-label" for="validatedCustomFile">Seleccionar archivo</label>
+  </div>
 </div>
     <div id="archivoSubido" class="row align-items-center justify-content-center" style="margin-top:20px; display: none;">
         <button type="submit" style="width: 195px;">Procesar archivo</button>
@@ -169,6 +167,9 @@
 </footer>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
