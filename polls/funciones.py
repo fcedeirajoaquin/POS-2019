@@ -618,7 +618,7 @@ def tienePAMI(laStr, elemento1, elemento2):
     return False
 def chequearPAMI(documento):
     browser.open('http://institucional.pami.org.ar/result.php?c=6-2')
-    form=browser.select_form(nr=3)
+    form=browser.select_form(nr=1)
     browser.set_handle_robots( False )
     browser["nroDocumento"]=documento
     response =browser.submit()
@@ -714,14 +714,9 @@ def filtrarVomitoV2(vomito):
 
         cuntaLE+=1
     cuntaLE=0
-    # for lista in listadoPami:
-    #     if cuntaLE % 2 == 0:
-    #         for a,b,c in lista:
-    #             print a,"  ",b,"   ",c
-    #     else:
-    #         for a in lista:
-    #             print a
-    #     cuntaLE+=1
+    # for a,b,c in listadoPami[1]:
+		# print a,"  ",b,"   ",c
+		# raw_input()
     return listadoPami
 def chequearArbolPami(url):
     r  = requests.get(url)
@@ -922,10 +917,6 @@ def botPUCO2018lista(listaDoc,listaReal):
     nombreglobal = ""
     data = urllib.urlencode({'documento':listaDoc})
     try:
-        print "ENTROOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
-        print listaDoc
-        print "---------------------------"
-        print listaReal
         url = "http://138.0.104.200/nacer/personas_puco_con_documentos.php"
         request = urllib2.Request(url,data)
         respuesta = urllib2.urlopen(request).read()
@@ -956,7 +947,6 @@ def botPUCO2018lista(listaDoc,listaReal):
                 listaDocumentos.append(elDocumento)
                 listaNombres.append(elNombre)
                 listaObrasSociales.append(ultimo)
-        print listaDocumentos
         lezipeado=zip(listaDocumentos,listaNombres,listaObrasSociales)
         return lezipeado
     except Exception as e:
@@ -1200,7 +1190,7 @@ def chequearPAMIconTIPO(documento):
     for elemento in listaOpciones:
         print elemento
         browser.open('http://institucional.pami.org.ar/result.php?c=6-2')
-        form=browser.select_form(nr=3)
+        form=browser.select_form(nr=1)
         browser.set_handle_robots( False )
         browser["nroDocumento"]=documento
         browser["tipoDocumento"]=[elemento]
@@ -1221,7 +1211,6 @@ def masInformacionBots(documento):
     listaZips=chequearPAMIconTIPO(documento)
     sumar=botPUCOSUMAR(documento)
     return listaZips,sumar
-
 #MAS TE VALE NO ROMPER NADA HIJO DE PUTA------------------
 global intentoListaDoc
 global browser
@@ -1241,7 +1230,6 @@ usuarioL="sss1754"
 contraL="1w4un8"
 browser=Browser()
 browser.set_handle_robots(False)
-
 # for elemento in listao4:
 #     print elemento
 # print "-----------------------------------------------------------------------------"

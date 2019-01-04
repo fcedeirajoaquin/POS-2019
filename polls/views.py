@@ -15,7 +15,6 @@ from django.core.files.storage import FileSystemStorage
 from io import BytesIO
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.utils import timezone
 try:
     import cStringIO as StringIO
 except ImportError:
@@ -100,14 +99,8 @@ def handler404(request):
 def handler500(request):
     response = render(request,'paginaNoEncontrada.html')
     return response
-
 def hola(request):
-	myDate=""
-	now = timezone.now()
-	archivo="d/m/Y"
-	return render(request, 'indexPOS.html',{"now":now})
-
-
+    return render(request, 'indexPOS.html')
 def get_name(request):
 	global documentoUnicoVirtual
 	listaPamisNormal=[]
