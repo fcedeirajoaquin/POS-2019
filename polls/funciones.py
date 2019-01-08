@@ -2,6 +2,7 @@
 # -*- coding: cp1252 -*-
 # -*- coding: 850 -*-
 # -*- coding: utf-8 -*-
+import configparser
 import os
 import random
 import sqlite3
@@ -16,7 +17,6 @@ from mechanize import Browser
 import time
 import datetime
 from PIL import ImageTk, Image
-#openpyxl
 import openpyxl
 from openpyxl.styles import colors
 from openpyxl.styles import Font, Color, PatternFill, Border, Side
@@ -32,174 +32,6 @@ from openpyxl.chart import (
     Reference
 )
 from openpyxl.chart.series import DataPoint
-def soloNum(documento):
-    docuLimpio=""
-    listaNum=["0","1","2","3","4","5","6","7","8","9"]
-    for elemento in documento:
-        if elemento in listaNum:
-            docuLimpio+=elemento
-    return docuLimpio
-def listaDocus(larca):
-
-    wolo3=1
-    woloMD="A"
-    colFinal=6
-    AC1=True
-    AC2=False
-    AC3=False
-    hojaLarca=larca.active
-    if int(wolo3)>1 and int(wolo3)<50:
-        hojaLarca.cell(row=int(wolo3)-1,column=int(colFinal)).value="PUCO"
-        hojaLarca.cell(row=int(wolo3)-1,column=int(colFinal)+1).value="IOMA"
-        hojaLarca.cell(row=int(wolo3)-1,column=int(colFinal)+2).value="SUPERINTENDENCIA"
-        hojaLarca.cell(row=int(wolo3)-1,column=int(colFinal)+3).value="FECHA DE ALTA"
-    hojaLarca.column_dimensions[hojaLarca.cell(row= 1, column=int(colFinal)).column].width=40
-    hojaLarca.column_dimensions[hojaLarca.cell(row= 1, column=int(colFinal)+1).column].width=30
-    hojaLarca.column_dimensions[hojaLarca.cell(row= 1, column=int(colFinal)+2).column].width=40
-    hojaLarca.column_dimensions[hojaLarca.cell(row= 1, column=int(colFinal)+3).column].width=15
-    n=1
-    cadaTanto=1000
-    contaNone=0
-    lebrak=False
-    default=50
-    ejeYlista=default
-    conta=0
-    if AC1==True:
-        for fila in hojaLarca:
-            if contaNone>5:
-                break
-            for columna in fila:
-                if n>=int(wolo3):
-                    if columna.coordinate==woloMD.upper()+str(n):
-                        if str(type(columna.value))!="<type 'NoneType'>":
-                            try:
-                                contaNone=0
-                                pucoList2=str(botPUCO2018(soloNum(str(columna.value))))
-                                print pucoList2
-                                if len(pucoList2) > 200 and pucoList2 != "No se reportan datos":
-                                    pucoList2="No se reportan datos"
-                                hojaLarca.cell(row=n,column=int(colFinal)).value=pucoList2
-                            except Exception as e:
-                                pucoList2=str(botPUCO2018(soloNum(str(columna.value))))
-                                if  len(pucoList2) > 20 and pucoList2 != "No se reportan datos":
-                                    pucoList2="No se reportan datos"
-                                hojaLarca.cell(row=n,column=int(colFinal)+1).value=pucoList2
-                            ejeYlista+=20
-                            if ejeYlista>580:
-                                ejeYlista=default
-                            print "-----------------------",n,"-------------------------"
-                            print ejeYlista
-                        else:
-                            contaNone+=1
-                        if contaNone>5:
-                            break
-                        if n%cadaTanto==0:
-                            print "-----------------------------------------------------------------------"
-                            print "GUARDE"
-                            print "-----------------------------------------------------------------------"
-                            # larca.save(rutaRelativa(nomDeArch)+nomFinal+"EnProceso1"+".xlsx")
-                    conta=conta+1
-            n+=1
-        print "-----------------------------------TERMINO PUCO----------------------------------"
-        print "-----------------------------------TERMINO PUCO----------------------------------"
-        print "*********************************************************************************"
-        # larca.save(rutaRelativa(nomDeArch)+nomFinal+".xlsx")
-    if AC3 == True:
-        n=1
-        contaNone=0
-        lebrak=False
-        conta=0
-        print "-----------------------------------EMPIEZA IOMA----------------------------------"
-        print "-----------------------------------EMPIEZA IOMA----------------------------------"
-        ejeYlista=default
-        for fila in hojaLarca:
-            if contaNone>5:
-                break
-            for columna in fila:
-                if n>=int(wolo3):
-                    if columna.coordinate==woloMD.upper()+str(n):
-                        if str(type(columna.value))!="<type 'NoneType'>":
-                            contaNone=0 
-                            try:
-                                if chequearIOMA(str(columna.value)) == True:
-                                    hojaLarca.cell(row=n,column=int(colFinal)+1).value="TIENE IOMA"
-                                else:
-                                    hojaLarca.cell(row=n,column=int(colFinal)+1).value="NO TIENE IOMA"
-                                ejeYlista+=20
-                                if ejeYlista>580:
-                                    ejeYlista=default
-                            except Exception as e:
-                                print "error de ioma"
-                                print e
-                                print "----------------------------------"
-                                # time.sleep(61)
-                                # hojaLarca.cell(row=n,column=int(colFinal)+1).value=str(chequearIOMA(soloNum(str(columna.value))))
-                            print "-----------------------",n,"-------------------------"
-                        else:
-                            contaNone+=1
-                        if contaNone>5:
-                            break
-                        if n%cadaTanto==0:
-                            print "-----------------------------------------------------------------------"
-                            print "GUARDE"
-                            print "-----------------------------------------------------------------------"
-                            # larca.save(rutaRelativa(nomDeArch)+nomFinal+"EnProceso2"+".xlsx")
-                    conta=conta+1
-            n+=1
-        print "-----------------------------------TERMINO IOMA----------------------------------"
-        print "-----------------------------------TERMINO IOMA----------------------------------"
-        print "**********************************************************************************"
-        # larca.save(rutaRelativa(nomDeArch)+nomFinal+".xlsx")
-    if AC2 == True:
-        n=1
-        ejeYlista=default
-        print "-----------------------------------EMPIEZA SUPERINTENDENCIA----------------------------------"
-        print "-----------------------------------EMPIEZA SUPERINTENDENCIA----------------------------------"
-        cantNone=0
-        d=0
-        for fila in hojaLarca:
-            if cantNone>5:
-                break
-            for columna in fila:
-                if n>=int(wolo3):
-                    if columna.coordinate==woloMD.upper()+str(n):
-                        if str(type(columna.value))!="<type 'NoneType'>" :
-                            cantNone=0
-                            try:
-                                OSSI2=controlSPIN(soloNum(str(columna.value)))
-                                ejeYlista+=20
-                                if ejeYlista>580:
-                                    ejeYlista=default
-                                hojaLarca.cell(row=n,column=int(colFinal)+2).value=OSSI2
-                                hojaLarca.cell(row=n,column=int(colFinal)+3).value=str(bateria)
-                                print "-------------------------",n,"------------------------------"
-                                if n%cadaTanto==0:
-                                    print "GUARDE------------------------------------------"
-                                    print "GUARDE------------------------------------------"
-                                    print "GUARDE------------------------------------------"
-                                    # larca.save(rutaRelativa(nomDeArch)+nomFinal+"EnProceso3"+".xlsx")
-                            except Exception as e:
-                                print "ERROR---------------------------------------"
-                                print e
-                                print "ERROR---------------------------------------"
-                                try:
-                                    time.sleep(61)
-                                    OSSI2=controlSPIN(soloNum(str(columna.value)))
-                                except Exception as b:
-                                    print "ERROR2--------------------------------------"
-                                    print e
-                                    print "ERROR2--------------------------------------"
-                        if str(type(columna.value))!="<type 'NoneType'>" :
-                            cantNone+=1
-                        if cantNone>5:
-                            # larca.save(nomFinal+"EnProceso2.xlsx")
-                            break
-            n+=1
-        print "-----------------------------------TERMINO SUPERINTENDENCIA----------------------------------"
-        print "-----------------------------------TERMINO SUPERINTENDENCIA----------------------------------"
-        print "**********************************************************************************"
-    # larca.save(rutaRelativa(nomDeArch)+nomFinal+".xlsx")
-    return larca
 def limpiarNombre(nombre):
 	acum=""
 	ordenamiento=0
@@ -218,7 +50,7 @@ def chequearSPINespecial(documento):
     global bateria
     global porta
     global nombreglobal2
-    url = "https://seguro.sssalud.gob.ar/indexss.php?opc=bus650&user=HPGD&cat=consultas"
+    url = configPOS['Superintendencia']['Url']
     nombreglobal2=""
     cadenita2 = ""
     cadenita = "" 
@@ -344,7 +176,7 @@ def chequearIOMA2018(documento):
 	return False
 def chequearIOMA2018bis(documento,sexo):
 	data = urllib.urlencode({'T3':documento,'sexo':sexo,'B13':'Buscar'})
-	url="http://www.ioma.gba.gov.ar/sistemas/consulta_padron_afiliados/buscadorpordocumento.php"
+	url=configPOS['Ioma']['Url']
 	request = urllib2.Request(url,data)
 	respuesta = urllib2.urlopen(request).read()
 	counterIOMA=0
@@ -374,73 +206,6 @@ def chequearIOMA2018bis(documento,sexo):
 		return True
 	else:
 		return False
-def chequearIOMA(documento):
-    global nombreglobal3
-    nombreglobal3=""
-    sexo=["1","2"]
-    counterIOMA=0
-    itworks=False
-    suma=0
-    try:
-        for indele in sexo:
-            cadenita = ""
-            ultima = ""
-            url = "http://www.ioma.gba.gov.ar/sistemas/consulta_padron_afiliados/consulta_afiliados.php" ##Son necesarias las comillas
-            franco = False
-            encontro = False
-            browser.open(url)
-            form = browser.select_form("numdoc")
-            browser[" T3"] = documento
-            browser.form.set_value([indele],name='sexo')
-            response = browser.submit()
-            leer = response.read()
-            for elemento in leer:
-                if encontro == True and elemento == "<":
-                    counterIOMA+=1
-                    if counterIOMA == 2:
-                        nombreglobal3 = cadenita
-                    ultima=cadenita
-                    encontro=False
-                    cadenita=""
-                if elemento == "<":
-                    cadenita=""
-                cadenita+=elemento
-                if cadenita == '<span class="texto-azul">' or cadenita =='<span class="texto-azul-bold">' :
-                    encontro=True
-                    itworks = True
-                if elemento==">":
-                    cadenita=""
-            if len(ultima) > 2:
-                suma+=1
-            else:
-                suma+=0
-        if suma>0:
-            return True
-        else:
-            return False
-    except Exception as e:
-            print "-----------------------------------------------------------------"
-            print str(e)
-            return "ERROR"
-def botPUCOfalso(documento):
-    return ["PAGINA NO DISPONIBLE"]
-def botPUCO2(documento):
-    global nombreglobal
-    nombreglobal = ""
-    data = urllib.urlencode({'documento':documento})
-    try:
-        url = "http://138.0.104.200/nacer/puco_historico.php"
-        # url = "http://138.0.104.200/nacer/puco"
-        request = urllib2.Request(url,data)
-        respuesta = urllib2.urlopen(request).read()
-        respLimpia,nombreglobal=limpiandingSTR(respuesta)
-        if respuesta == "null":
-            return "No se reportan datos"
-        else:
-            return respLimpia
-    except: 
-        listaEr=["PAGINA NO DISPONIBLE"]
-        return listaEr
 def limpiandingSTR(cadena):
     nombresito=""
     c=""
@@ -528,63 +293,6 @@ def limpiandingSTR2(cadena):
             return nombresito+" "+nombresito2
     estaactivosumar = False
     return ""
-def chequearPuco(documento):
-    try:
-        listaOS=[]
-        noTiene=False
-        url = "http://www.saludnqn.gob.ar/PadronConsultasWeb/"
-        browser.open(url,timeout=2)
-        form = browser.select_form(nr=0)
-        browser["ctl00$ContentPlaceHolder1$txtNumero"]=documento
-        response =browser.submit()
-        respuesta=response.read()
-        counter=0
-        notieneOS=False
-        oeses=[5,11,17,23,29,35]
-        cadenita = ""
-        ultima = ""
-        franco = False
-        encontro = False
-        for elemento in respuesta:
-                if encontro == True and elemento == "<":
-                    counter+=1
-                    ultima=cadenita
-                    if ultima.strip(" ") == "No se encontraron datos":
-                        notieneOS=True
-                        return noTiene
-                    encontro=False
-                    cadenita=""
-                if elemento == "<":
-                    cadenita=""
-                cadenita+=elemento
-                if cadenita == '<td colspan="6">':
-                    encontro=True
-                if elemento==">":
-                    cadenita=""
-        cadenita=""
-        counter=0
-        ultima=""
-        encontro=False
-        if notieneOS==False:
-            for elemento in respuesta:
-                if encontro == True and elemento == "<":
-                    counter+=1
-                    ultima=cadenita
-                    if counter in oeses:
-                        listaOS.append(ultima.strip(" "))
-                    encontro=False
-                    cadenita=""
-                if elemento == "<":
-                    cadenita=""
-                cadenita+=elemento
-                if cadenita == '<td style="font-size:Smaller;">' or cadenita == '<div class="text">':
-                    encontro=True
-                if elemento==">":
-                    cadenita=""
-        return listaOS
-    except Exception as e:
-            print str(e)
-            return "ERROR"
 def conseguirInput(cadena):
     inputLimpio=""
     corchetes=0
@@ -603,10 +311,6 @@ def conseguirInput(cadena):
         if conta==2:
             if elemento!="'":
                 inputLimpio+=elemento
-def printAlgo():
-    print"*********************************************************************************************"
-    print "holaaaaaaaaaaaaaaaaaaaa"
-    print"*********************************************************************************************"
 def siLaPalabraEstaEnLaLista(lista,palabra):
     for elemento in lista:
         if palabra in elemento:
@@ -774,42 +478,6 @@ def limpiarNombres():
 	nombreglobal=""
 	nombreglobal2=""
 	nombreglobal3=""
-def botPUCO2018(documento):
-    global nombreglobal
-    nombreglobal = ""
-    data = urllib.urlencode({'documento':documento})
-    try:
-        url = 'http://138.0.104.200/nacer/personas_puco_con_documentos.php'
-        request = urllib2.Request(url,data)
-        respuesta = urllib2.urlopen(request).read()
-        respLimpia,nombreglobal=limpiandingSTR(respuesta)
-        if respuesta == "null":
-            return "No se reportan datos"
-        else:
-            return respLimpia
-    except: 
-        return "ERROR"
-def botPAMI2018(documento):
-    data = urllib.urlencode({'tipoDocumento':'DNI','nroDocumento':documento,'submit2':'Buscar'})
-    url='http://institucional.pami.org.ar/result.php?c=6-2-2'
-    # request = urllib2.Request(url,data)
-    # respuesta = urllib2.urlopen(request).read()
-    respuesta = requests.post(url,data=data)
-    # filtrarVomito(respuesta)
-    print respuesta.text
-    print filtrarVomito(respuesta)
-    return listaDmodulo,listaRed,listaPrestador
-def botPUCOhistorico(documento):
-    data = urllib.urlencode({'nrodoc':documento,"tabla":"PUCO_2018-05"})
-    url = "http://138.0.104.200/nacer/puco.php"
-    request = urllib2.Request(url,data) 
-    respuesta = urllib2.urlopen(request).read()
-    respLimpia=limpiandingSTR(respuesta)
-    if respuesta == "null":
-        return False
-    else:
-        return respLimpia
-
 def escribirEnLaBD(documento,nombre,puco,ioma,spin):
    puco2=""
    nombre=nombre.strip("- ")
@@ -840,14 +508,13 @@ def sacarEstosElementos(cadena,lista):
     for elemento in lista:
         cadena=cadena.strip(elemento)
     return cadena
-# sacarEstosElemntos("</strong>",["<","/",">"])
 def botPUCO2018(documento):
     global intentoListaDoc
     global nombreglobal
     nombreglobal = ""
     data = urllib.urlencode({'documento':documento})
     try:
-        url = "http://138.0.104.200/nacer/personas_puco_con_documentos.php"
+        url = configPOS['Puco']['UrlPrincipal']
         request = urllib2.Request(url,data)
         respuesta = urllib2.urlopen(request).read()
         respLimpia,nombreglobal=limpiandingSTR(respuesta)
@@ -858,54 +525,6 @@ def botPUCO2018(documento):
     except:
         listaEr=["PAGINA NO DISPONIBLE"]
         return listaEr
-def botSPIN2018(documento):
-    global intentoListaDoc
-    global nombreglobal
-    payload = {'_user_name_':'sss1754','_pass_word_':'1w4un8'}
-	# url = 'https://seguro.sssalud.gob.ar/login.php?opc=bus650&user=HPGD&cat=consultas'
-	# try:
-	# 	print requests.post(url,header,data=payload)
-	# except Exception as e:
-	# 	request=urllib2.Request(url,payload,header)
-	# 	respuesta = urllib2.urlopen(request).read()
-	# 	print respuesta
-    ssl._create_default_https_context = ssl._create_unverified_context
-    header = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'}
-    url = 'https://seguro.sssalud.gob.ar/login.php?opc=bus650&user=HPGD&cat=consultas'
-    login_data = dict(login='sss1754', password='1w4un8')
-    session = requests.session()
-    # session.headers.update(header)
-    # urllib3.contrib.pyopenssl.inject_into_urllib3()
-    r = session.post(url, data=payload, headers=header, verify='cacert.pem')
-    print r.text #prints the <html> response.
-    r2 = session.get('https://seguro.sssalud.gob.ar/login.php?opc=bus650&user=HPGD&cat=consultas')
-    print r2.content #prints the raw html you can now parse and scrape
-    # r = requests.post(url, auth=('sss1754','1w4un8'), verify = True)
-    # print r
-    # raw_input()
-    # data = urllib.urlencode({'q': 'Status'})
-
-    # h = httplib.HTTPConnection('myserver:8080')
-
-    # headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
-
-    # h.request('POST', '/inout-tracker/index.php', data, headers)
-
-    # r = h.getresponse()
-
-    # print r.read()
-    # nombreglobal = ""
-    # ssl._create_default_https_context = ssl._create_unverified_context
-    # header = {'User-Agent': 'Mozilla/5.0 (Windows NT 5.1; rv:14.0) Gecko/20100101 Firefox/14.0.1', 'Referer': 'http://whateveritis.com'}
-    # header = {'_user_name_':'sss1754','_pass_word_':'1w4un8','submitbtn':'ingresar'}
-    # header = {'User-Agent': 'Mozilla/5.0 (Windows NT 5.1; rv:14.0) Gecko/20100101 Firefox/14.0.1', 'Referer': 'http://whateveritis.com'}
-    # respuesta = requests.get('https://seguro.sssalud.gob.ar/login.php?opc=bus650&user=HPGD&cat=consultas', auth=('sss1754', '1w4un8'))
-    # data = urllib.urlencode({'nro_doc':documento,'B1':'Conjhhjasdsa'})
-    # # url = "https://seguro.sssalud.gob.ar/login.php?opc=bus650&user=HPGD&cat=consultas"
-    # url = "https://seguro.sssalud.gob.ar/indexss.php?opc=bus650&user=HPGD&cat=consultas"
-    # request = urllib2.Request(url,data,header)
-    # respuesta = urllib2.urlopen(request).read()
-    # print respuesta
 def botPUCO2018lista(listaDoc,listaReal):
     global intentoListaDoc
     global nombreglobal
@@ -917,7 +536,7 @@ def botPUCO2018lista(listaDoc,listaReal):
     nombreglobal = ""
     data = urllib.urlencode({'documento':listaDoc})
     try:
-        url = "http://138.0.104.200/nacer/personas_puco_con_documentos.php"
+        url = configPOS['Puco']['UrlPrincipal']
         request = urllib2.Request(url,data)
         respuesta = urllib2.urlopen(request).read()
         regex = r"\{(.*?)\"}"
@@ -954,7 +573,6 @@ def botPUCO2018lista(listaDoc,listaReal):
         listaEr=["PAGINA NO DISPONIBLE"]
         return listaEr
     return listaDocumentos,listaNombres,listaObrasSociales
-
 def nombreSumar():
 	global nombreglobalsumar
 	return (nombreglobalsumar)
@@ -962,7 +580,7 @@ def botPUCOSUMAR(documento):
     try:
         global nombreglobalsumar
         data = urllib.urlencode({'documento':documento})
-        url = "http://138.0.104.200/nacer/personas_inscriptas_hist_con_documentos.php"
+        url = configPOS['Puco']['UrlSumar']
         request = urllib2.Request(url,data)
         respuesta = urllib2.urlopen(request).read()
         nombreglobalsumar=limpiandingSTR2(respuesta)
@@ -1030,22 +648,6 @@ def entreParametros(parametros,texto):
     abrioDV=True
     cerroDV=False
     parametroNecesario=True
-    # for elemento in texto:
-    #     if elemento == ">":
-    #         abrio2=True
-    #         print acumulador
-    #     if elemento == "<":
-    #         if abrio1==True and abrio2 == True:
-    #             abrio2=False
-    #             acumulador=""
-    #         if abrio1==True and abrio2==False:
-    #             print textoNec
-    #         abrio1=True
-    #     if abrio1==True or abrio2==True:
-    #         if elemento not in lista:
-    #             acumulador+=elemento
-    #     if abrio1==True and abrio2==False:
-    #         textoNec+=elemento
     for elemento in texto:
         if elemento == "<":
             if parametroNecesario==True:
@@ -1220,35 +822,24 @@ global nombreglobal
 global nombreglobal2
 global nombreglobal3
 global nombreglobalsumar
+global configPOS
 listaDoc=[]
 listaNom=[]
 listaOSES=[]
 nombreglobal=""
 nombreglobal2=""
 nombreglobal3=""
-usuarioL="sss1754"
-contraL="Larcade02"
-#contraL="1w4un8"
+configPOS = configparser.ConfigParser()
+configPOS.sections()
+configPOS.read('configPOS.ini')
+usuarioL=configPOS['Superintendencia']['Usuario']
+contraL=configPOS['Superintendencia']['Contra']
 browser=Browser()
 browser.set_handle_robots(False)
-# for elemento in listao4:
-#     print elemento
-# print "-----------------------------------------------------------------------------"
-# listaRandoms=[]
-# for i in range(10):
-#     listaRandoms.append(str(random.randint(10000,100000000)))
-# for elemento in listaRandoms:
-#     print elemento
-# for a,b,c in botPUCO2018listaBis(listaRandoms):
-#     print a,"  ",b,"  ",c
-#     print " "
-# listaRandoms=[]
-# while True:
-#     print chequearPAMI(str(random.randint(10000,100000000)))
-
-# lista=["style","p"]
-# texto="sdaasffhajshljakjfklasjfklajflkj<style>bueeenas</style>iasdjoasjfoiadasfsajfkajskfljasfjl<p>comooooooooooooooooooremavamos</p>jasoifjsaofjsaoifjoais"
-# print len(chequearPAMI("11822431"))
-# print chequearPAMI("6828448")
-# listaPamisNormal_=chequearPAMI("11822431")
-# print siLaPalabraEstaEnLaLista(listaPamisNormal_[0][2],"LARCADE")
+#PROBAR BOTS DE OBRAS SOCIALES -------------------------------------------------------------------
+#print controlSPIN("40743779")
+#print botPUCO2018("40743779")
+#print botPUCOSUMAR("40743779")
+#print chequearIOMA2018('40743779')
+#PROBAR BOTS DE OBRAS SOCIALES -------------------------------------------------------------------
+print usuarioL

@@ -124,7 +124,6 @@ def get_name(request):
 			listaPuco=botPUCO2018(documento)
 			if listaPuco=="No se reportan datos":
 				listaPuco=["No se reportan datos"]
-			# listaPuco=botPUCO2(documento)
 			if int(documento) > 10000:
 				OSSI2=controlSPIN(documento)
 			else:
