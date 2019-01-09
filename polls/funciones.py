@@ -508,23 +508,6 @@ def sacarEstosElementos(cadena,lista):
     for elemento in lista:
         cadena=cadena.strip(elemento)
     return cadena
-def botPUCO2018(documento):
-    global intentoListaDoc
-    global nombreglobal
-    nombreglobal = ""
-    data = urllib.urlencode({'documento':documento})
-    try:
-        url = configPOS['Puco']['UrlPrincipal']
-        request = urllib2.Request(url,data)
-        respuesta = urllib2.urlopen(request).read()
-        respLimpia,nombreglobal=limpiandingSTR(respuesta)
-        if respuesta == "null" or len(respLimpia) == 0:
-            return "No se reportan datos"
-        else:
-            return respLimpia
-    except:
-        listaEr=["PAGINA NO DISPONIBLE"]
-        return listaEr
 def botPUCO2018lista(listaDoc,listaReal):
     global intentoListaDoc
     global nombreglobal
@@ -813,6 +796,23 @@ def masInformacionBots(documento):
     listaZips=chequearPAMIconTIPO(documento)
     sumar=botPUCOSUMAR(documento)
     return listaZips,sumar
+def botPUCO2018(documento):
+    global intentoListaDoc
+    global nombreglobal
+    nombreglobal = ""
+    data = urllib.urlencode({'documento':documento})
+    try:
+        url = "https://docs.python.org/3.1/library/urllib.request.html"
+        request = urllib2.Request(url,data,timeout=3000)
+        respuesta = urllib2.urlopen(request).read()
+        respLimpia,nombreglobal=limpiandingSTR(respuesta)
+        if respuesta == "null" or len(respLimpia) == 0:
+            return "No se reportan datos"
+        else:
+            return respLimpia
+    except:
+        listaEr=["PAGINA NO DISPONIBLE"]
+        return listaEr
 #MAS TE VALE NO ROMPER NADA HIJO DE PUTA------------------
 global intentoListaDoc
 global browser
