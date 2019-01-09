@@ -842,4 +842,3 @@ browser.set_handle_robots(False)
 #print botPUCOSUMAR("40743779")
 #print chequearIOMA2018('40743779')
 #PROBAR BOTS DE OBRAS SOCIALES -------------------------------------------------------------------
-print usuarioL
