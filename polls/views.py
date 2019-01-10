@@ -121,7 +121,7 @@ def get_name(request):
 			capitaOnoTF=False
 			IOMA=chequearIOMA2018(documento)
 			documentoUnicoVirtual=documento
-			listaPuco=botPUCO2018(documento)
+			listaPuco=botPUCO2019(documento)
 			if listaPuco=="No se reportan datos":
 				listaPuco=["No se reportan datos"]
 			if int(documento) > 10000:
