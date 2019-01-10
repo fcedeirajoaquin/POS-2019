@@ -796,14 +796,14 @@ def masInformacionBots(documento):
     listaZips=chequearPAMIconTIPO(documento)
     sumar=botPUCOSUMAR(documento)
     return listaZips,sumar
-def botPUCO2018(documento):
+def botPUCO2019(documento):
     global intentoListaDoc
     global nombreglobal
     nombreglobal = ""
-    data = urllib.urlencode({'documento':documento})
+    data = urllib.urlencode({'documento':documento,'tabla':'PUCO_2018-12'})
     try:
-        url = "https://docs.python.org/3.1/library/urllib.request.html"
-        request = urllib2.Request(url,data,timeout=3000)
+        url = configPOS['Puco']['UrlPrincipal']
+        request = urllib2.Request(url,data)
         respuesta = urllib2.urlopen(request).read()
         respLimpia,nombreglobal=limpiandingSTR(respuesta)
         if respuesta == "null" or len(respLimpia) == 0:
@@ -838,7 +838,7 @@ browser=Browser()
 browser.set_handle_robots(False)
 #PROBAR BOTS DE OBRAS SOCIALES -------------------------------------------------------------------
 #print controlSPIN("40743779")
-#print botPUCO2018("40743779")
+#print botPUCO2019("40743779")
 #print botPUCOSUMAR("40743779")
 #print chequearIOMA2018('40743779')
 #PROBAR BOTS DE OBRAS SOCIALES -------------------------------------------------------------------
