@@ -41,7 +41,7 @@ def masInformacion(request):
 		contextos={'sumar_':pucoSumar,
 				   'listaPamis_':listaZips,
 				   }
-		return render(request, 'masInfo.html',contextos)
+		return render(request, 'MasInfo.html',contextos)
 	# except Exception as e:
 	# 	# print e
 	# 	# return HttpResponseRedirect('/pos/')
@@ -100,7 +100,7 @@ def handler500(request):
     response = render(request,'paginaNoEncontrada.html')
     return response
 def hola(request):
-    return render(request, 'indexPOS.html')
+    return render(request, 'IndexPOS.html')
 def get_name(request):
 	global documentoUnicoVirtual
 	listaPamisNormal=[]
@@ -224,13 +224,13 @@ def get_name(request):
 			except Exception as e:
 				print e
 				print "error en la base de datos"
-			return render(request, 'template.html', contextos)
+			return render(request, 'ResultadosConsultaUnica.html', contextos)
 
 	else:
 		form = NameForm()
-	return render(request, 'name2.html', {'form': form})
+	return render(request, 'ConsultaUnica.html', {'form': form})
 def prueba(request):
-	return render(request, 'consultaLista.html')
+	return render(request, 'ConsultaLista.html')
 def waddup(request, pk):
     print "asddddddddddddddddddddddddd"
     YOUR_OBJECT.objects.filter(pk=pk).update(views=F('views')+1)
@@ -244,7 +244,7 @@ def upload_file(request):
 			print type(wb)
 	else:
 		form = UploadFileForm()
-	return render(request, 'consultaLista.html', {'form': form})
+	return render(request, 'ConsultaLista.html', {'form': form})
 def descargaExcel(request):
 	global rutaExcel
 	global nombreExcel
@@ -278,22 +278,12 @@ def simple_upload(request):
 			# response['Content-Disposition'] = 'attachment; filename='+nombreExcel
 			# response['Refresh'] = "1; /home/"
 			# return response
-			return render(request, 'consultaListaDescargaCompleta.html', {"nombreArchivo_":nombreExcel})
+			return render(request, 'ConsultaListaDescargaCompleta.html', {"nombreArchivo_":nombreExcel})
 	except Exception as e:
 		print e
 		archivo=False
-		return render(request, 'consultaLista.html',{'archivo_':archivo})
-	return render(request, 'consultaLista.html',{'archivo_':archivo})
-def simple_upload2(request):
-    if request.method == 'POST' and request.FILES['myfile']:
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
-        return HttpResponse(content, content_type='text/plain'),render(request, 'consultaLista2.html', {
-            'uploaded_file_url': uploaded_file_url,
-        })
-    return render(request, 'consultaLista2.html')
+		return render(request, 'ConsultaLista.html',{'archivo_':archivo})
+	return render(request, 'ConsultaLista.html',{'archivo_':archivo})
 global buscarMas
 global browser
 global usuarioL
