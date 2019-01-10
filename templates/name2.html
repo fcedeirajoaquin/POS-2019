@@ -46,12 +46,17 @@
      <input type="submit" class="btn btn-info" value="Aceptar">
     </div>
 </form> -->
+<div  class="text-right">
+  <a href="{% url 'home' %}">Volver</a>
+</div>
 <div class="row align-items-center justify-content-center">
+
 
 <form method="post" name="installer" onsubmit="showHide();">
 {% csrf_token %}
   	<div class="input-group">
   	<span class="input-group-text" id="">INGRESE EL DOCUMENTO</span>
+
 
      <input type="text" name="your_name" minlength="5" required="" title="Ingrese solo numeros." id="id_your_name" pattern="[0-9]+" min_value="1000" class="form-control" maxlength="8" autocomplete="off">
 
@@ -67,9 +72,7 @@
   </form>
 </div>
 </div>
-<div  class="text-right">
-  <a href="{% url 'home' %}">Volver</a>
-</div>
+
 
 <!--    <div class="d-flex justify-content-center">
      <div class="input-group-prepend">
