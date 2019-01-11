@@ -505,18 +505,13 @@ def sacarEstosElementos(cadena,lista):
 def botPUCO2018lista(listaDoc,listaReal):
 	global intentoListaDoc
 	global nombreglobal
-	print listaDoc
-	print type(listaDoc)
-	raw_input()
-	print listaReal
-	raw_input()
 	listaDocumentos=[]
 	listaObrasSociales=[]
 	listaNombres=[]
 	par=0
 	listaBan=[",",":"]
 	nombreglobal = ""
-	data = urllib.urlencode({'documento':listaDoc})
+	data = urllib.urlencode({'documento':listaDoc,'tabla':'PUCO_2018-12'})
 	try:
 		url = configPOS['Puco']['UrlPrincipal']
 		request = urllib2.Request(url,data)
@@ -710,7 +705,7 @@ def botPUCO2019(documento):
     global intentoListaDoc
     global nombreglobal
     nombreglobal = ""
-    data = urllib.urlencode({'documento':documento,'tabla':'PUCO_2018-12'})
+    data = urllib.urlencode({'documento':documento,'tabla':config['Puco']['Tabla']})
     try:
         url = configPOS['Puco']['UrlPrincipal']
         request = urllib2.Request(url,data)
