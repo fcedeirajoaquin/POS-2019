@@ -32,6 +32,7 @@ from openpyxl.chart import (
     Reference
 )
 from openpyxl.chart.series import DataPoint
+#Esta funcion te li
 def limpiarNombre(nombre):
 	acum=""
 	ordenamiento=0
@@ -96,7 +97,8 @@ def chequearSPINespecial(documento):
             encontro=True
         if elemento==">":
             cadenita=""
-    return OSSI2        
+    return OSSI2
+#ControlSPIN controla que funcion usar dependiendo si el bot ya esta logeado en la pagina o no
 def controlSPIN(documento):
     try:
         ssl._create_default_https_context = ssl._create_unverified_context
@@ -112,6 +114,7 @@ def controlSPIN(documento):
             OSSI2=chequearSPIN(documento,response)
             return OSSI2
         except:
+        	#Si entro aca significa que el bot ya estaba logeado
             OSSI2=chequearSPINespecial(documento)
             return OSSI2
     except Exception as e:
@@ -137,6 +140,7 @@ def chequearSPIN(documento,response):
     contadorsitocade2=0
     OSSI2=""
     leer = response.read()
+    #TODO EL FOR ESTE, PARSEA EL HTML PARA CONSEGUIR LA INFORMACION QUE NECESESITAMOS
     for elemento in leer:
         if encontro2 == True and elemento == "<":
             if contadorsitocade2 == 6:
@@ -170,11 +174,13 @@ def chequearSPIN(documento,response):
     return OSSI2
 def chequearIOMA2018(documento):
 	tiene=False
+	#ESTE FOR ESTA PARA ITERAR SOBRE LOS SEXOS (1,2) ESTO SE HACE POR QUE PARA CONSULTAR A IOMA HAY QUE ELEGIR EL SEXO
 	for item in range(1,3):
 		if chequearIOMA2018bis(documento,item) == True:
 			return True
 	return False
 def chequearIOMA2018bis(documento,sexo):
+	#HACE UNA REQUEST A LA PAGINA DE IOMA CON LOS HEADERS EN LA VARIABLE 'DATA' DE ABAJO
 	data = urllib.urlencode({'T3':documento,'sexo':sexo,'B13':'Buscar'})
 	url=configPOS['Ioma']['Url']
 	request = urllib2.Request(url,data)
@@ -186,6 +192,7 @@ def chequearIOMA2018bis(documento,sexo):
 	ultima = ""
 	franco = False
 	encontro = False
+	#PARSEA LA RESPUESTA QUE SERIA UN HTML
 	for elemento in respuesta:
 		if encontro == True and elemento == "<":
 			counterIOMA+=1
@@ -293,6 +300,7 @@ def limpiandingSTR2(cadena):
             return nombresito+" "+nombresito2
     estaactivosumar = False
     return ""
+#CONSEGUIRINPUT LEE TODA LA REQUEST Y TRAE LA VARIABLE PUESTA EN EL INPUT DEL TEMPLATE 'ConsultaUnica.html' TOTALMENTE MAL, DEBE HABER ALGO ULTRA SIMPLE PERO ME DIO PAJA BUSCARLO (algo como request.input)
 def conseguirInput(cadena):
     inputLimpio=""
     corchetes=0
@@ -414,14 +422,10 @@ def filtrarVomitoV2(vomito):
             listado1,listado2,listado3= chequearArbolPami(url)
             listadoPami.append([listaDoc[cuntaLE],listaNom[cuntaLE]])
             listadoPami.append(zip(listado1,listado2,listado3))
-
-
         cuntaLE+=1
     cuntaLE=0
-    # for a,b,c in listadoPami[1]:
-		# print a,"  ",b,"   ",c
-		# raw_input()
     return listadoPami
+#ESTA FUNCION TE DEVUELVE LAS 3 LISTAS DE PAMI
 def chequearArbolPami(url):
     r  = requests.get(url)
     listaDmodulo=[]
@@ -452,6 +456,7 @@ def chequearArbolPami(url):
                 listaPrestador.append(str(linkLimpio))
             contaTabla+=1
     return listaDmodulo,listaRed,listaPrestador
+#BUSCA ENTRE TODOS LOS NOMBRES QUE TIENE DE LOS BOTS Y TE DEVUELVE UNO VALIDO
 def nombreLigadoAlDocumento():
     if len(nombreglobal)>4:
         return nombreglobal
@@ -493,47 +498,41 @@ def escribirEnLaBD(documento,nombre,puco,ioma,spin):
    conn.commit()
    cursor.execute('SELECT * FROM historial')
    data = cursor.fetchall()
-
-def autoTestingPOS(documento):
-    url="http://172.20.40.88:81/POS/consultaUnica/"
-    browser.open(url)
-    form = browser.select_form("installer")
-    browser["your_name"] = documento
-    response = browser.submit()
-    leer = response.read()
-    listaParametros=["p","strong"]
-    print entreParametros(listaParametros,leer)
-
 def sacarEstosElementos(cadena,lista):
     for elemento in lista:
         cadena=cadena.strip(elemento)
     return cadena
 def botPUCO2018lista(listaDoc,listaReal):
-    global intentoListaDoc
-    global nombreglobal
-    listaDocumentos=[]
-    listaObrasSociales=[]
-    listaNombres=[]
-    par=0
-    listaBan=[",",":"]
-    nombreglobal = ""
-    data = urllib.urlencode({'documento':listaDoc})
-    try:
-        url = configPOS['Puco']['UrlPrincipal']
-        request = urllib2.Request(url,data)
-        respuesta = urllib2.urlopen(request).read()
-        regex = r"\{(.*?)\"}"
-        elDocumento=""
-        esElDoc=False
-        ultimo=""
-        elNombre=""
-        matches = re.finditer(regex, respuesta, re.MULTILINE | re.DOTALL)
-        for matchNum, match in enumerate(matches):
-            par=0
-            for groupNum in range(0, len(match.groups())):       
-                elmo=match.group(1)
-                esElDoc=False
-                for elemento in elmo.split('"'):
+	global intentoListaDoc
+	global nombreglobal
+	print listaDoc
+	print type(listaDoc)
+	raw_input()
+	print listaReal
+	raw_input()
+	listaDocumentos=[]
+	listaObrasSociales=[]
+	listaNombres=[]
+	par=0
+	listaBan=[",",":"]
+	nombreglobal = ""
+	data = urllib.urlencode({'documento':listaDoc})
+	try:
+		url = configPOS['Puco']['UrlPrincipal']
+		request = urllib2.Request(url,data)
+		respuesta = urllib2.urlopen(request).read()
+		regex = r"\{(.*?)\"}"
+		elDocumento=""
+		esElDoc=False
+		ultimo=""
+		elNombre=""
+		matches = re.finditer(regex, respuesta, re.MULTILINE | re.DOTALL)
+		for matchNum, match in enumerate(matches):
+			par=0
+			for groupNum in range(0, len(match.groups())):       
+				elmo=match.group(1)
+				esElDoc=False
+				for elemento in elmo.split('"'):
                     if elemento not in listaBan:
                         # print elemento
                         if par%2==0:
@@ -573,96 +572,7 @@ def botPUCOSUMAR(documento):
             return True
     except:
         return "ERROR"
-def dosListasv2(lista1A,lista2B,listaOS,listaNom):
-    acum=0
-    for elemento in lista2B:
-        print elemento
-        print listaOS[acum]
-        print listaNom[acum]
-        acum+=1
-        print "-------------------------------------------------"
-    lista3C=[]
-    lista3Cos=[]
-    lista3Nom=[]
-    acum=0
-    acumEspecial=0
-    anterior=""
-    for elemento in lista2B:
-        while lista1A[acum] != elemento:
-            lista3C.append(lista1A[acum])
-            lista3Cos.append("NO")
-            lista3Nom.append("NO")
-            if acum<=len(lista1A)-1:
-                acum+=1
-                break
-        lista3C.append(lista1A[acum])
-        lista3Cos.append(listaOS[acumEspecial])
-        lista3Nom.append(listaNom[acumEspecial])
-        anterior = elemento
-        acumEspecial+=1
-    while acum<=len(lista1A)-1:
-        lista3C.append(lista1A[acum])
-        lista3Cos.append("NO")
-        lista3Nom.append("NO")
-        acum+=1
-    acum=0
-    anterior=""
-    while acum <= len(lista3C)-1:
-        if anterior == lista3C[acum] and lista3Cos[acum]=="NO":
-            if lista3Cos[acum-1]!="NO":
-                lista3Cos.pop(acum)
-                lista3C.pop(acum)
-                lista3Nom.pop(acum)
-                acum-=1
-        anterior=lista3C[acum]
-        acum+=1
-    acum=0
-    return convertirEnUna(zip(lista3C,lista3Cos,lista3Nom))
-
-def entreParametros(parametros,texto):
-    lista=["<","/",">"]
-    abrio1=False
-    cerro1=False
-    abrio2=False
-    denovo=False
-    TextoEtiquetas=[]
-    acumulador=""
-    textoNec=""
-    abrioDV=True
-    cerroDV=False
-    parametroNecesario=True
-    for elemento in texto:
-        if elemento == "<":
-            if parametroNecesario==True:
-                if len(textoNec) >1:
-                    if "DATOS" not in textoNec:
-                        TextoEtiquetas.append(textoNec.strip(" ")) 
-                parametroNecesario=False
-            textoNec=""
-            denovo=False
-            abrio1=True
-        if denovo==True:
-            abrio1=False
-            cerro1=False
-        if abrio1==True and cerro1==False:
-            acumulador+=elemento
-        if denovo ==True:
-            if abrioDV==True:
-                textoNec+=elemento
-        if elemento == ">":
-            cerro1=True
-            conn = sqlite3.connect(os.path.join( os.path.dirname( __file__),'..')+"/pos.sqlite3") 
-            # print acumulador
-            # print sacarEstosElementos(acumulador,lista)
-            if sacarEstosElementos(acumulador,lista) in parametros:
-                parametroNecesario=True
-            if "/" in acumulador:
-                cerroDV,abrioDV=True,False
-            else:
-                abrioDV,cerroDV=True,False
-            acumulador=""
-            denovo=True
-    return TextoEtiquetas
+#LE DAS UNA LISTA Y TE LO TRANSFORMA EN UN CSV 
 def convertirEnUna(masiva):
     listaDOC=[]
     listaOS=[]
@@ -679,6 +589,7 @@ def convertirEnUna(masiva):
             acum+=1
         anterior=doc
     return zip(listaDOC,listaOS,listaNOM)
+#LISTADOCUS2018 LEE TODOS LOS DOCUMENTOS DEL EXCEL Y TE LOS DEVUELVE EN UNA LISTA
 def listaDocus2018bis(hojaDocus):
     columnaDocus="A"
     n=1
@@ -699,32 +610,31 @@ def listaDocus2018bis(hojaDocus):
         n+=1
     return listaDocus
 def botPUCO2018listaBis(lista):
-    listaLimpia=[]
-    acum=0
-    listaDoc=[]
-    listaNom=[]
-    listaOSES=[]
-    listaDoc1=[]
-    listaNom1=[]
-    listaOSES1=[]
-    registro1=""
-    registro2=""
-    nidea=""
-    listadocus=""
-    for elemento in lista:
-        listadocus+=filtroSoloNumeros(elemento)+" "
-        if acum%2500==0 and acum>1 or acum+1==len(lista):
-            niidea=botPUCO2018lista(listadocus.strip(" "),lista)
-            for a,b,c in niidea:
-                listaDoc.append(a)
-                listaNom.append(b)
-                listaOSES.append(c)
-            listadocus=""
-        acum+=1
-    acum=0
-    acum2=0
-    # return dosListasv2(lista,listaDoc,listaOSES,listaNom)
-    return filtroDeListongui(listaDoc,listaOSES,listaNom)
+	listaLimpia=[]
+	acum=0
+	listaDoc=[]
+	listaNom=[]
+	listaOSES=[]
+	listaDoc1=[]
+	listaNom1=[]
+	listaOSES1=[]
+	registro1=""
+	registro2=""
+	nidea=""
+	listadocus=""
+	for elemento in lista:
+		listadocus+=filtroSoloNumeros(elemento)+" "
+		if acum%2500==0 and acum>1 or acum+1==len(lista):
+			niidea=botPUCO2018lista(listadocus.strip(" "),lista)
+			for a,b,c in niidea:
+				listaDoc.append(a)
+				listaNom.append(b)
+				listaOSES.append(c)
+			listadocus=""
+		acum+=1
+	acum=0
+	acum2=0
+	return filtroDeListongui(listaDoc,listaOSES,listaNom)
 def filtroSoloNumeros(numero):
     acum=""
     if numero != None:
@@ -732,6 +642,7 @@ def filtroSoloNumeros(numero):
             if elemento.isdigit() == True:
                 acum+=elemento
         return acum
+#ESCRIBE EN UN EXCEL TODOS LOS DATOS DE PUCO 
 def listaDocus2018(archivo):
     hojaDocumentos=archivo.active
     listaTerminada=botPUCO2018listaBis(listaDocus2018bis(hojaDocumentos))
@@ -768,7 +679,6 @@ def filtroDeListongui(listaDocus,listaOses,listaNom):
     return zip(listaDocus,listaOses,listaNom)
 def chequearPAMIconTIPO(documento):
     listaOpciones=["DNI","LC","LE","PAS","CI"]
-    # listaOpciones=["DNI"]
     vomitoLimpio=[]
     listaZips=[]
     listaTipo=[]
@@ -813,6 +723,14 @@ def botPUCO2019(documento):
     except:
         listaEr=["PAGINA NO DISPONIBLE"]
         return listaEr
+#HACE UNA REQUEST Y DEVUELVE UN HTML
+#FILTRAR VOMITO TE PARSEA TODO ESE HTML Y TE DEVUELVE EL NOMBRE, DOCUMENTO,... Y MAS IMPORTANTE TE DEVUELVE UN LINK
+def chequearPAMI(documento):
+	url = 'https://prestadores.pami.org.ar/result.php?c=6-2-2'
+	data = urllib.urlencode({'tipoDocumento':'DNI','nroDocumento':documento,'submit2':'Buscar'})
+	request = urllib2.Request(url,data)
+	respuesta = urllib2.urlopen(request).read()
+	return filtrarVomitoV2(respuesta)
 #MAS TE VALE NO ROMPER NADA HIJO DE PUTA------------------
 global intentoListaDoc
 global browser
