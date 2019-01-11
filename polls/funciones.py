@@ -533,28 +533,28 @@ def botPUCO2018lista(listaDoc,listaReal):
 				elmo=match.group(1)
 				esElDoc=False
 				for elemento in elmo.split('"'):
-                    if elemento not in listaBan:
-                        # print elemento
-                        if par%2==0:
-                            if par==4:
-                                elDocumento=elemento
-                            if par==6:
-                                elNombre=elemento
+					if elemento not in listaBan:
+						# print elemento
+						if par%2==0:
+							if par==4:
+								elDocumento=elemento
+							if par==6:
+								elNombre=elemento
                             # print "--------------------------------------------------------------"
-                        ultimo=elemento
+						ultimo=elemento
 
-                        par+=1
+						par+=1
                 # print "******************************************"
-                listaDocumentos.append(elDocumento)
-                listaNombres.append(elNombre)
-                listaObrasSociales.append(ultimo)
-        lezipeado=zip(listaDocumentos,listaNombres,listaObrasSociales)
-        return lezipeado
-    except Exception as e:
-        print e 
-        listaEr=["PAGINA NO DISPONIBLE"]
-        return listaEr
-    return listaDocumentos,listaNombres,listaObrasSociales
+				listaDocumentos.append(elDocumento)
+				listaNombres.append(elNombre)
+				listaObrasSociales.append(ultimo)
+		lezipeado=zip(listaDocumentos,listaNombres,listaObrasSociales)
+		return lezipeado
+	except Exception as e:
+		print e 
+		listaEr=["PAGINA NO DISPONIBLE"]
+		return listaEr
+	return listaDocumentos,listaNombres,listaObrasSociales
 def nombreSumar():
 	global nombreglobalsumar
 	return (nombreglobalsumar)
