@@ -705,7 +705,7 @@ def botPUCO2019(documento):
     global intentoListaDoc
     global nombreglobal
     nombreglobal = ""
-    data = urllib.urlencode({'documento':documento,'tabla':config['Puco']['Tabla']})
+    data = urllib.urlencode({'documento':documento,'tabla':configPOS['Puco']['Tabla']})
     try:
         url = configPOS['Puco']['UrlPrincipal']
         request = urllib2.Request(url,data)
@@ -722,7 +722,7 @@ def botPUCO2019(documento):
 #FILTRAR VOMITO TE PARSEA TODO ESE HTML Y TE DEVUELVE EL NOMBRE, DOCUMENTO,... Y MAS IMPORTANTE TE DEVUELVE UN LINK
 def chequearPAMI(documento):
 	url = 'https://prestadores.pami.org.ar/result.php?c=6-2-2'
-	data = urllib.urlencode({'tipoDocumento':'DNI','nroDocumento':documento,'submit2':'Buscar'})
+	data = urllib.urlencode({'tipoDocumento':'DNI','nro_doccumento':documento,'submit2':'Buscar'})
 	request = urllib2.Request(url,data)
 	respuesta = urllib2.urlopen(request).read()
 	return filtrarVomitoV2(respuesta)
