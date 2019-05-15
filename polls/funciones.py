@@ -173,6 +173,8 @@ def chequearSPIN(documento,response):
             cadenita=""
     return OSSI2
 def chequearIOMA2018(documento):
+    return False
+def chequearIOMA2018nofunciona(documento):
 	tiene=False
 	#ESTE FOR ESTA PARA ITERAR SOBRE LOS SEXOS (1,2) ESTO SE HACE POR QUE PARA CONSULTAR A IOMA HAY QUE ELEGIR EL SEXO
 	for item in range(1,3):
@@ -565,7 +567,8 @@ def botPUCOSUMAR(documento):
             return False
         else:
             return True
-    except:
+    except Exception as e:
+        print e
         return "ERROR"
 #LE DAS UNA LISTA Y TE LO TRANSFORMA EN UN CSV 
 def convertirEnUna(masiva):
@@ -702,20 +705,26 @@ def masInformacionBots(documento):
     sumar=botPUCOSUMAR(documento)
     return listaZips,sumar
 def botPUCO2019(documento):
+    print "asdasd/"+documento+"/asdasd"
     global intentoListaDoc
     global nombreglobal
     nombreglobal = ""
     data = urllib.urlencode({'documento':documento,'tabla':configPOS['Puco']['Tabla']})
     try:
         url = configPOS['Puco']['UrlPrincipal']
+        print "point 1"
         request = urllib2.Request(url,data)
-        respuesta = urllib2.urlopen(request).read()
+        print "point 2"
+        respuesta = urllib2.urlopen(request,timeout=20000).read()
+        print "point 3"
         respLimpia,nombreglobal=limpiandingSTR(respuesta)
+        print "point 4"
         if respuesta == "null" or len(respLimpia) == 0:
             return "No se reportan datos"
         else:
             return respLimpia
-    except:
+    except Exception as e:
+        print e
         listaEr=["PAGINA NO DISPONIBLE"]
         return listaEr
 #HACE UNA REQUEST Y DEVUELVE UN HTML
@@ -751,7 +760,7 @@ browser=Browser()
 browser.set_handle_robots(False)
 #PROBAR BOTS DE OBRAS SOCIALES -------------------------------------------------------------------
 #print controlSPIN("40743779")
-#print botPUCO2019("40743779")
-#print botPUCOSUMAR("40743779")
+# print botPUCO2019("40743779")
+print botPUCOSUMAR("40743779")
 #print chequearIOMA2018('40743779')
 #PROBAR BOTS DE OBRAS SOCIALES -------------------------------------------------------------------
